@@ -31,7 +31,7 @@ import numpy as np
 plt.figure(figsize=(10, 4))
 plt.subplot(121)
 plt.title("Four blobs")
-X_3, y_3 = make_blobs(n_samples=100, n_features=2, centers=4, cluster_std=1.6,  random_state = 123)
+X_3, y_3 = make_blobs(n_samples=100, n_features=2, centers=4, cluster_std=1.6, random_state = 123)
 plt.scatter(X_3[:, 0], X_3[:, 1], c = y_3, s=25)
 
 plt.subplot(122)
@@ -41,6 +41,10 @@ plt.scatter(X_4[:, 0], X_4[:, 1], c = y_4, s=25)
 
 plt.show()
 ```
+
+
+![png](index_files/index_7_0.png)
+
 
 ## Explore the RBF kernel
 
@@ -243,6 +247,6 @@ Now build a simple linear SVM using this data. Note that using SVC, some slack i
 
 Note that it takes quite a while to compute this. The score is slightly better than the best result obtained using decision trees, but do note that SVMs are computationally expensive. Changing kernels can even make computation times much longer.
 
-# Summary
+## Summary
 
 Great, you've got plenty of practice in on Support Vector Machines! In this lab you explored kernels and applying SVM on real-life data!
