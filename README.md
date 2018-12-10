@@ -479,6 +479,6 @@ clf.score(data_test, target_test.iloc[:,1])
 
 Note that it takes quite a while to compute this. The score is slightly better than the best result obtained using decision trees, but do note that SVMs are computationally expensive. Changing kernels can even make computation times much longer.
 
-# Summary
+## Summary
 
 Great, you've got plenty of practice in on Support Vector Machines! In this lab you explored kernels and applying SVM on real-life data!
