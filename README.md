@@ -42,10 +42,6 @@ plt.scatter(X_4[:, 0], X_4[:, 1], c = y_4, s=25)
 plt.show()
 ```
 
-
-![png](index_files/index_7_0.png)
-
-
 ## Explore the RBF kernel
 
 In this exercise, we'll explore the RBF kernel looking at the "Two interleaving half circles" data.
@@ -59,81 +55,28 @@ Note that the score represents the percentage of correctly classified instances 
 
 ```python
 # Create a loop that builds a model for each of the 9 combinations
-C_range =  np.array([0.1, 1, 10])  # [0.01, 10]
-gamma_range =  np.array([0.1, 1, 100]) # [1, 100] 
-param_grid = dict(gamma=gamma_range, C=C_range)
-details = []
-for C in C_range:
-    for gamma in gamma_range:
-        clf = svm.SVC(C=C, gamma=gamma)
-        clf.fit(X_4, y_4)
-        details.append((C, gamma, clf))
+
 ```
 
 
 ```python
 # Prepare your data for plotting
-X1= X_4[:,0]
-X2= X_4[:,1]
-X1_min, X1_max = X1.min() - 1, X1.max() + 1
-X2_min, X2_max = X2.min() - 1, X2.max() + 1
 
-x1_coord = np.linspace(X1_min, X1_max, 500)
-x2_coord = np.linspace(X2_min, X2_max, 500)
-
-X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
-x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
 ```
 
 
 ```python
 # Plot the prediction results in 9 subplots  
-plt.figure(figsize=(11, 11))
 
-for (k, (C, gamma, clf)) in enumerate(details):
-    # evaluate the predictions in a grid
-    Z = clf.predict(x1x2)  
-    Z = Z.reshape(X1_C.shape)
-
-    # visualize decision function for these parameters
-    plt.subplot(3, 3, k + 1)
-    plt.title("gam= %r, C= %r, score = %r"  % (gamma, C, round(clf.score(X_4,y_4), 2)))
-
-    # visualize parameter's effect on decision function
-    plt.contourf(X1_C, X2_C, Z, alpha = 1)
-    plt.scatter(X_4[:, 0], X_4[:, 1], c=y_4,  edgecolors='gray')
-    plt.axis('tight')
 ```
-
-
-![png](index_files/index_15_0.png)
-
 
 Repeat what you did before but now, use `decision_function` instead of `predict`. What do you see?
 
 
 ```python
-# Plot the prediction results in 9 subplots  
-plt.figure(figsize=(12, 12))
+# Plot the decision function results in 9 subplots
 
-for (k, (C, gamma, clf)) in enumerate(details):
-    # evaluate the decision functions in a grid
-    Z = clf.decision_function(x1x2)  
-    Z = Z.reshape(X1_C.shape)
-
-    # visualize decision function for these parameters
-    plt.subplot(3, 3, k + 1)
-    plt.title("gam= %r, C= %r, score = %r"  % (gamma, C, round(clf.score(X_4,y_4), 2)))
-
-    # visualize parameter's effect on decision function
-    plt.contourf(X1_C, X2_C, Z, alpha = 1)
-    plt.scatter(X_4[:, 0], X_4[:, 1], c=y_4,  edgecolors='gray')
-    plt.axis('tight')
 ```
-
-
-![png](index_files/index_17_0.png)
-
 
 ## Explore the Polynomial kernel
 
@@ -152,57 +95,20 @@ Note that `decision_function()` cannot be used on a classifier with more than tw
 
 ```python
 # Create a loop that builds a model for each of the 8 combinations
-r_range =  np.array([0.1, 2])  # [0.01, 10]
-gamma_range =  np.array([0.1, 1]) # [1, 100] 
-d_range = np.array([3, 4])
-param_grid = dict(gamma=gamma_range, degree = d_range, coef0 = r_range)
-details = []
-for d in d_range:
-    for gamma in gamma_range:
-         for r in r_range:
-            clf = svm.SVC(kernel = "poly", coef0 = r , gamma=gamma, degree= d)
-            clf.fit(X_3, y_3)
-            details.append((r, d, gamma, clf))
+
 ```
 
 
 ```python
 # Prepare your data for plotting
-X1= X_3[:,0]
-X2= X_3[:,1]
-X1_min, X1_max = X1.min() - 1, X1.max() + 1
-X2_min, X2_max = X2.min() - 1, X2.max() + 1
 
-x1_coord = np.linspace(X1_min, X1_max, 500)
-x2_coord = np.linspace(X2_min, X2_max, 500)
-
-X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
-x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
 ```
 
 
 ```python
 # Plot the prediction results in 8 subplots  
-plt.figure(figsize=(12, 14))
 
-for (k, (r, d,gamma, clf)) in enumerate(details):
-    # evaluate the predictions in a grid
-    Z = clf.predict(x1x2)  
-    Z = Z.reshape(X1_C.shape)
-
-    # visualize decision function for these parameters
-    plt.subplot(4, 2, k + 1)
-    plt.title("d= %r, gam= %r, r = %r , score = %r"  % (d, gamma,r, round(clf.score(X_3,y_3), 2)))
-
-    # visualize parameter's effect on decision function
-    plt.contourf(X1_C, X2_C, Z, alpha = 1)
-    plt.scatter(X_3[:, 0], X_3[:, 1], c=y_3,  edgecolors='gray')
-    plt.axis('tight')
 ```
-
-
-![png](index_files/index_23_0.png)
-
 
 ## The Sigmoid Kernel
 
@@ -221,55 +127,20 @@ Look at 9 solutions using the following values for $\gamma$ and $r$.
 
 ```python
 # Create a loop that builds a model for each of the 9 combinations
-r_range =  np.array([0.01, 1, 10])  
-gamma_range =  np.array([0.001, 0.01, 0.1]) 
-param_grid = dict(gamma=gamma_range,coef0 = r_range)
-details = []
-for gamma in gamma_range:
-     for r in r_range:
-        clf = svm.SVC(kernel = "sigmoid", coef0 = r , gamma=gamma)
-        clf.fit(X_3, y_3) 
-        details.append((r, gamma, clf))
+
 ```
 
 
 ```python
 # Prepare your data for plotting
-X1= X_3[:,0]
-X2= X_3[:,1]
-X1_min, X1_max = X1.min() - 1, X1.max() + 1
-X2_min, X2_max = X2.min() - 1, X2.max() + 1
 
-x1_coord = np.linspace(X1_min, X1_max, 500)
-x2_coord = np.linspace(X2_min, X2_max, 500)
-
-X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
-x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
 ```
 
 
 ```python
 # Plot the prediction results in 9 subplots  
-plt.figure(figsize=(12, 14))
 
-for (k, (r, gamma, clf)) in enumerate(details):
-    # evaluate the predictions in a grid
-    Z = clf.predict(x1x2)  
-    Z = Z.reshape(X1_C.shape)
-
-    # visualize decision function for these parameters
-    plt.subplot(3, 3, k + 1)
-    plt.title(" gam= %r, r = %r , score = %r"  % (gamma,r, round(clf.score(X_3,y_3), 2)))
-
-    # visualize parameter's effect on decision function
-    plt.contourf(X1_C, X2_C, Z, alpha = 1)
-    plt.scatter(X_3[:, 0], X_3[:, 1], c=y_3,  edgecolors='gray')
-    plt.axis('tight')
 ```
-
-
-![png](index_files/index_28_0.png)
-
 
 ## What is your conclusion here?
 
@@ -286,96 +157,26 @@ Explore the same parameters you did before when exploring Polynomial Kernels
 
 
 ```python
-X_train, X_test, y_train, y_test = train_test_split(X_3, y_3, test_size = 0.33, random_state=123)
+# Perform a train test split, then create a loop that builds a model for each of the 8 combinations
 
-# Create a loop that builds a model for each of the 8 combinations
-r_range =  np.array([0.1, 2])  # [0.01, 10]
-gamma_range =  np.array([0.1, 1]) # [1, 100] 
-d_range = np.array([3, 4])
-param_grid = dict(gamma=gamma_range, degree = d_range, coef0 = r_range)
-details = []
-for d in d_range:
-    for gamma in gamma_range:
-         for r in r_range:
-            clf = svm.SVC(kernel = "poly", coef0 = r , gamma=gamma, degree= d)
-            clf.fit(X_train, y_train)
-            details.append((r, d, gamma, clf))
 ```
 
 
 ```python
 # Prepare your data for plotting
-X1= X_train[:,0]
-X2= X_train[:,1]
-X1_min, X1_max = X1.min() - 1, X1.max() + 1
-X2_min, X2_max = X2.min() - 1, X2.max() + 1
 
-x1_coord = np.linspace(X1_min, X1_max, 500)
-x2_coord = np.linspace(X2_min, X2_max, 500)
-
-X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
-x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
 ```
 
 
 ```python
-# Plot the prediction results in 8 subplots  
-plt.figure(figsize=(12, 14))
+# Plot the prediction results in 8 subplots on the training set  
 
-for (k, (r, d,gamma, clf)) in enumerate(details):
-    # evaluate the predictions in a grid
-    Z = clf.predict(x1x2)  
-    Z = Z.reshape(X1_C.shape)
-
-    # visualize decision function for these parameters
-    plt.subplot(4, 2, k + 1)
-    plt.title("d= %r, gam= %r, r = %r , score = %r"  % (d, gamma,r, round(clf.score(X_train,y_train), 2)))
-
-    # visualize parameter's effect on decision function
-    plt.contourf(X1_C, X2_C, Z, alpha = 1)
-    plt.scatter(X1, X2, c=y_train,  edgecolors='gray')
-    plt.axis('tight')
 ```
-
-
-![png](index_files/index_34_0.png)
-
 
 
 ```python
-# Prepare your data for plotting
-X1= X_test[:,0]
-X2= X_test[:,1]
-X1_min, X1_max = X1.min() - 1, X1.max() + 1
-X2_min, X2_max = X2.min() - 1, X2.max() + 1
-
-x1_coord = np.linspace(X1_min, X1_max, 500)
-x2_coord = np.linspace(X2_min, X2_max, 500)
-
-X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
-x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
-
-# Plot the prediction results in 8 subplots  
-plt.figure(figsize=(12, 14))
-
-for (k, (r, d,gamma, clf)) in enumerate(details):
-    # evaluate the predictions in a grid
-    Z = clf.predict(x1x2)  
-    Z = Z.reshape(X1_C.shape)
-
-    # visualize decision function for these parameters
-    plt.subplot(4, 2, k + 1)
-    plt.title("d= %r, gam= %r, r = %r , score = %r"  % (d, gamma,r, round(clf.score(X_test,y_test), 2)))
-
-    # visualize parameter's effect on decision function
-    plt.contourf(X1_C, X2_C, Z, alpha = 1)
-    plt.scatter(X1, X2, c=y_test,  edgecolors='gray')
-    plt.axis('tight')
+# Now plot the prediction results for the test set
 ```
-
-
-![png](index_files/index_35_0.png)
-
 
 ## A higher-dimensional, real world data set
 
@@ -422,60 +223,23 @@ Now build a simple linear SVM using this data. Note that using SVC, some slack i
 
 
 ```python
-data_train, data_test, target_train, target_test = train_test_split(data, target, 
-                                                                   test_size = 0.25, random_state=123)
+# Your code here
 ```
 
 
 ```python
-import time
-start_time = time.time()
-clf = svm.SVC(probability=True)
-clf.fit(data_train, target_train.iloc[:,1])
-total =(time.time() - start_time)
+# Your code here
 ```
 
 
 ```python
-total/60
+# Your code here
 ```
-
-
-
-
-    2.836274214585622
-
-
 
 
 ```python
-clf.predict_proba(data_test)
+# Your code here
 ```
-
-
-
-
-    array([[0.17819675, 0.82180325],
-           [0.70370432, 0.29629568],
-           [0.93188871, 0.06811129],
-           ...,
-           [0.92005486, 0.07994514],
-           [0.85519752, 0.14480248],
-           [0.75988609, 0.24011391]])
-
-
-
-
-```python
-clf.score(data_test, target_test.iloc[:,1])
-```
-
-
-
-
-    0.8304876550792286
-
-
 
 Note that it takes quite a while to compute this. The score is slightly better than the best result obtained using decision trees, but do note that SVMs are computationally expensive. Changing kernels can even make computation times much longer.
 
