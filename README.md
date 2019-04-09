@@ -42,10 +42,6 @@ plt.scatter(X_4[:, 0], X_4[:, 1], c = y_4, s=25)
 plt.show()
 ```
 
-
-![png](index_files/index_7_0.png)
-
-
 ## Explore the RBF kernel
 
 In this exercise, we'll explore the RBF kernel looking at the "Two interleaving half circles" data.
@@ -105,10 +101,6 @@ for (k, (C, gamma, clf)) in enumerate(details):
     plt.axis('tight')
 ```
 
-
-![png](index_files/index_15_0.png)
-
-
 Repeat what you did before but now, use `decision_function` instead of `predict`. What do you see?
 
 
@@ -130,10 +122,6 @@ for (k, (C, gamma, clf)) in enumerate(details):
     plt.scatter(X_4[:, 0], X_4[:, 1], c=y_4,  edgecolors='gray')
     plt.axis('tight')
 ```
-
-
-![png](index_files/index_17_0.png)
-
 
 ## Explore the Polynomial kernel
 
@@ -200,10 +188,6 @@ for (k, (r, d,gamma, clf)) in enumerate(details):
     plt.axis('tight')
 ```
 
-
-![png](index_files/index_23_0.png)
-
-
 ## The Sigmoid Kernel
 
 Build a support vector machine using the Sigmoid kernel.
@@ -266,10 +250,6 @@ for (k, (r, gamma, clf)) in enumerate(details):
     plt.scatter(X_3[:, 0], X_3[:, 1], c=y_3,  edgecolors='gray')
     plt.axis('tight')
 ```
-
-
-![png](index_files/index_28_0.png)
-
 
 ## What is your conclusion here?
 
@@ -338,10 +318,6 @@ for (k, (r, d,gamma, clf)) in enumerate(details):
 ```
 
 
-![png](index_files/index_34_0.png)
-
-
-
 ```python
 # Prepare your data for plotting
 X1= X_test[:,0]
@@ -372,10 +348,6 @@ for (k, (r, d,gamma, clf)) in enumerate(details):
     plt.scatter(X1, X2, c=y_test,  edgecolors='gray')
     plt.axis('tight')
 ```
-
-
-![png](index_files/index_35_0.png)
-
 
 ## A higher-dimensional, real world data set
 
@@ -410,8 +382,8 @@ salaries = pd.read_csv("salaries_final.csv", index_col = 0)
 
 ```python
 from patsy import dmatrices
-target, data = dmatrices('C(Target) ~ Age  + C(Race)+ C(Education)+ C(Relationship)+ C(Sex)+ C(Occupation)', 
-                  salaries, return_type = "dataframe")  #
+target, data = dmatrices('C(Target) ~ Age  + C(Race)+ C(Education)+ C(Sex)+ C(Occupation)+C(Relationship)', 
+                  salaries, return_type = "dataframe") 
 ```
 
 Now build a simple linear SVM using this data. Note that using SVC, some slack is automatically allowed, so the data doesn't have to perfectly linearly separable.
@@ -441,41 +413,14 @@ total/60
 ```
 
 
-
-
-    2.836274214585622
-
-
-
-
 ```python
 clf.predict_proba(data_test)
 ```
 
 
-
-
-    array([[0.17819675, 0.82180325],
-           [0.70370432, 0.29629568],
-           [0.93188871, 0.06811129],
-           ...,
-           [0.92005486, 0.07994514],
-           [0.85519752, 0.14480248],
-           [0.75988609, 0.24011391]])
-
-
-
-
 ```python
 clf.score(data_test, target_test.iloc[:,1])
 ```
-
-
-
-
-    0.8304876550792286
-
-
 
 Note that it takes quite a while to compute this. The score is slightly better than the best result obtained using decision trees, but do note that SVMs are computationally expensive. Changing kernels can even make computation times much longer.
 
