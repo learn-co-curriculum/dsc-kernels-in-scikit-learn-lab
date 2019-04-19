@@ -3,7 +3,7 @@
 
 ## Introduction
 
-In this lab, we'll explore applying several types of Kernels on some more visual data. At the end of the lab, we'll be looking at a real-life data set again to see how SVMs can be of use there!
+In this lab, we'll explore applying several types of kernels on some more visual data. At the end of the lab, we'll be looking at a real-life data set again to see how SVMs can be of use there!
 
 ## Objectives
 
@@ -41,6 +41,10 @@ plt.scatter(X_4[:, 0], X_4[:, 1], c = y_4, s=25)
 
 plt.show()
 ```
+
+
+![png](index_files/index_7_0.png)
+
 
 ## Explore the RBF kernel
 
@@ -101,6 +105,10 @@ for (k, (C, gamma, clf)) in enumerate(details):
     plt.axis('tight')
 ```
 
+
+![png](index_files/index_15_0.png)
+
+
 Repeat what you did before but now, use `decision_function` instead of `predict`. What do you see?
 
 
@@ -122,6 +130,10 @@ for (k, (C, gamma, clf)) in enumerate(details):
     plt.scatter(X_4[:, 0], X_4[:, 1], c=y_4,  edgecolors='gray')
     plt.axis('tight')
 ```
+
+
+![png](index_files/index_17_0.png)
+
 
 ## Explore the Polynomial kernel
 
@@ -188,6 +200,10 @@ for (k, (r, d,gamma, clf)) in enumerate(details):
     plt.axis('tight')
 ```
 
+
+![png](index_files/index_23_0.png)
+
+
 ## The Sigmoid Kernel
 
 Build a support vector machine using the Sigmoid kernel.
@@ -250,6 +266,10 @@ for (k, (r, gamma, clf)) in enumerate(details):
     plt.scatter(X_3[:, 0], X_3[:, 1], c=y_3,  edgecolors='gray')
     plt.axis('tight')
 ```
+
+
+![png](index_files/index_28_0.png)
+
 
 ## What is your conclusion here?
 
@@ -318,6 +338,10 @@ for (k, (r, d,gamma, clf)) in enumerate(details):
 ```
 
 
+![png](index_files/index_34_0.png)
+
+
+
 ```python
 # Prepare your data for plotting
 X1= X_test[:,0]
@@ -348,6 +372,10 @@ for (k, (r, d,gamma, clf)) in enumerate(details):
     plt.scatter(X1, X2, c=y_test,  edgecolors='gray')
     plt.axis('tight')
 ```
+
+
+![png](index_files/index_35_0.png)
+
 
 ## A higher-dimensional, real world data set
 
@@ -381,9 +409,123 @@ salaries = pd.read_csv("salaries_final.csv", index_col = 0)
 
 
 ```python
+salaries.head()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Education</th>
+      <th>Occupation</th>
+      <th>Relationship</th>
+      <th>Race</th>
+      <th>Sex</th>
+      <th>Target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39</td>
+      <td>Bachelors</td>
+      <td>Adm-clerical</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50</td>
+      <td>Bachelors</td>
+      <td>Exec-managerial</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>38</td>
+      <td>HS-grad</td>
+      <td>Handlers-cleaners</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>53</td>
+      <td>11th</td>
+      <td>Handlers-cleaners</td>
+      <td>Husband</td>
+      <td>Black</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>28</td>
+      <td>Bachelors</td>
+      <td>Prof-specialty</td>
+      <td>Wife</td>
+      <td>Black</td>
+      <td>Female</td>
+      <td>&lt;=50K</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+salaries.info()
+```
+
+    <class 'pandas.core.frame.DataFrame'>
+    Int64Index: 32561 entries, 0 to 32560
+    Data columns (total 7 columns):
+    Age             32561 non-null int64
+    Education       32561 non-null object
+    Occupation      32561 non-null object
+    Relationship    32561 non-null object
+    Race            32561 non-null object
+    Sex             32561 non-null object
+    Target          32561 non-null object
+    dtypes: int64(1), object(6)
+    memory usage: 2.0+ MB
+
+
+
+```python
 from patsy import dmatrices
-target, data = dmatrices('C(Target) ~ Age  + C(Race)+ C(Education)+ C(Sex)+ C(Occupation)+C(Relationship)', 
-                  salaries, return_type = "dataframe") 
+# target, data = dmatrices('C(Target) ~ Age+C(Race)+C(Education)+C(Sex)+C(Occupation)+C(Relationship)', 
+#                   salaries, return_type = "dataframe") 
+target = pd.get_dummies(salaries.Target, drop_first=True)
+xcols = salaries.columns[:-1]
+data = pd.get_dummies(salaries[xcols], drop_first=True)
 ```
 
 Now build a simple linear SVM using this data. Note that using SVC, some slack is automatically allowed, so the data doesn't have to perfectly linearly separable.
@@ -403,7 +545,7 @@ data_train, data_test, target_train, target_test = train_test_split(data, target
 import time
 start_time = time.time()
 clf = svm.SVC(probability=True)
-clf.fit(data_train, target_train.iloc[:,1])
+clf.fit(data_train, target_train['>50K'])
 total =(time.time() - start_time)
 ```
 
@@ -413,14 +555,41 @@ total/60
 ```
 
 
+
+
+    2.622378452618917
+
+
+
+
 ```python
 clf.predict_proba(data_test)
 ```
 
 
+
+
+    array([[0.17760716, 0.82239284],
+           [0.70230618, 0.29769382],
+           [0.93139973, 0.06860027],
+           ...,
+           [0.91794155, 0.08205845],
+           [0.85441779, 0.14558221],
+           [0.75891988, 0.24108012]])
+
+
+
+
 ```python
-clf.score(data_test, target_test.iloc[:,1])
+clf.score(data_test, target_test['>50K'])
 ```
+
+
+
+
+    0.8304876550792286
+
+
 
 Note that it takes quite a while to compute this. The score is slightly better than the best result obtained using decision trees, but do note that SVMs are computationally expensive. Changing kernels can even make computation times much longer.
 
