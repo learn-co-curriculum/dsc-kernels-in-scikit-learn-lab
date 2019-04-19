@@ -210,13 +210,14 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 import pandas as pd
 salaries = pd.read_csv("salaries_final.csv", index_col = 0)
+salaries.head()
 ```
 
 
 ```python
-from patsy import dmatrices
-target, data = dmatrices('C(Target) ~ Age  + C(Race)+ C(Education)+ C(Relationship)+ C(Sex)+ C(Occupation)', 
-                  salaries, return_type = "dataframe")  #
+target = pd.get_dummies(salaries.Target, drop_first=True)
+xcols = salaries.columns[:-1]
+data = pd.get_dummies(salaries[xcols], drop_first=True)
 ```
 
 Now build a simple linear SVM using this data. Note that using SVC, some slack is automatically allowed, so the data doesn't have to perfectly linearly separable.
