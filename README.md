@@ -520,9 +520,6 @@ salaries.info()
 
 
 ```python
-from patsy import dmatrices
-# target, data = dmatrices('C(Target) ~ Age+C(Race)+C(Education)+C(Sex)+C(Occupation)+C(Relationship)', 
-#                   salaries, return_type = "dataframe") 
 target = pd.get_dummies(salaries.Target, drop_first=True)
 xcols = salaries.columns[:-1]
 data = pd.get_dummies(salaries[xcols], drop_first=True)
@@ -557,7 +554,7 @@ total/60
 
 
 
-    2.622378452618917
+    2.498819931348165
 
 
 
@@ -569,13 +566,13 @@ clf.predict_proba(data_test)
 
 
 
-    array([[0.17760716, 0.82239284],
-           [0.70230618, 0.29769382],
-           [0.93139973, 0.06860027],
+    array([[0.17745777, 0.82254223],
+           [0.70343524, 0.29656476],
+           [0.932043  , 0.067957  ],
            ...,
-           [0.91794155, 0.08205845],
-           [0.85441779, 0.14558221],
-           [0.75891988, 0.24108012]])
+           [0.9186611 , 0.0813389 ],
+           [0.85539234, 0.14460766],
+           [0.76004909, 0.23995091]])
 
 
 
