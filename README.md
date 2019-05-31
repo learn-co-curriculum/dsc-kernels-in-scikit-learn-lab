@@ -1,9 +1,9 @@
 
-# Kernels in scikit-learn - Lab
+# Kernels in sci-kit learn - Lab
 
 ## Introduction
 
-In this lab, we'll explore applying several types of kernels on some more visual data. At the end of the lab, we'll be looking at a real-life data set again to see how SVMs can be of use there!
+In this lab, you'll explore applying several types of kernels on some more visual data. At the end of the lab, you'll then apply your knowledge of SVMs to a real world dataset!
 
 ## Objectives
 
@@ -15,7 +15,7 @@ You will be able to:
 
 ## The data
 
-Let's start this lab where we left things last time: we had a data set which clearly wasn't linearly separable. Next, we'll look at the data with four clusters, as non-linear boundaries might be appropriate here as well. Let's plot the data again.
+To start, reexamine the final datasets from the previous lab.
 
 
 ```python
@@ -46,11 +46,11 @@ plt.show()
 ![png](index_files/index_7_0.png)
 
 
+  
+
 ## Explore the RBF kernel
 
-In this exercise, we'll explore the RBF kernel looking at the "Two interleaving half circles" data.
-
-Recall how a radial basis function kernel has 2 hyperparameters: `C` and `gamma`. Let's explore RBFs for some values of C and gamma. Using [this resource as a source of inspiration](https://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html), create 3 x 3 plots for values of gamma = [0.1, 1, 100] and C = [0.1, 1, 100]. Each of the 9 plots should look like this:
+Recall how a radial basis function kernel has 2 hyperparameters: `C` and `gamma`. To further investigate tuning, you'll generate 9 subplots with varying parameter values and plot the resulting decision boundaries. Take a look at this [example from sci-kit learn](https://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html) as inspiration. Each of the 9 plots should look like this:
 
 ![](SVM_rbf.png)
 
@@ -278,7 +278,7 @@ for (k, (r, gamma, clf)) in enumerate(details):
 
 ## Explore the Polynomial Kernels again, yet now performing a train-test-split
 
-Explore the same parameters you did before when exploring Polynomial Kernels
+Explore the same parameters you did before when exploring polynomial kernels
 - Do a train test split of 2/3 train vs 1/3 test. 
 - Train the model on the training set, plot the result and theh accuracy score.
 - Next, plot the model with the test set and the resulting accuracy score. Make some notes for yourself on training vs test performance and selecting an appropriate model based on these results.
@@ -379,9 +379,11 @@ for (k, (r, d,gamma, clf)) in enumerate(details):
 
 ## A higher-dimensional, real world data set
 
-Until now, we've only considered data sets with 2 features to make it easy to understand what's going on visually. Remember that you can use Support Vector Machines on a wide range of classification data sets, with more than 2 features. It will no longer be possible to visually represent decision boundaries (at least, if you have more than 3 feature spaces), but you'll still be able to make predictions.
+Until now, you've only explored data sets with 2 features to make it easy to visualize the decision boundary. Remember that you can use Support Vector Machines on a wide range of classification data sets, with more than 2 features. While you will no longer be able to visually represent decision boundaries (at least, if you have more than 3 feature spaces), you'll still be able to make predictions.
 
-Let's use the salaries dataset again (in `salaries_final.csv`). Recall that the 6 predictors are:
+To do this, you'll use the salaries dataset again (in `salaries_final.csv`). 
+
+This dataset has 6 predictors:
 
 - `Age`: continuous.
 
@@ -395,7 +397,7 @@ Let's use the salaries dataset again (in `salaries_final.csv`). Recall that the 
 
 - `Sex`: Female, Male.
 
-We've imported the data for you and have also converted the data set using `dmatrices`. Look at the final data structure! `dmatrices` is used very often for preprocessing data with continuous and categorical predictors.
+Simply run the code below to import and preview the dataset. Be sure to note the data type produced by`dmatrices`. `dmatrices` is often used for preprocessing data with continuous and categorical predictors.
 
 
 ```python
@@ -588,8 +590,8 @@ clf.score(data_test, target_test['>50K'])
 
 
 
-Note that it takes quite a while to compute this. The score is slightly better than the best result obtained using decision trees, but do note that SVMs are computationally expensive. Changing kernels can even make computation times much longer.
+> Warning: It takes quite a while to compute this! The score is slightly better than the best result obtained using decision trees, but at the cost of computational resources. Changing kernels can make computation times even longer.
 
 ## Summary
 
-Great, you've got plenty of practice in on Support Vector Machines! In this lab you explored kernels and applying SVM on real-life data!
+Great, you've got plenty of practice in on Support Vector Machines! In this lab you explored kernels and applying SVMs to real-life data!
