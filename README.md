@@ -52,7 +52,7 @@ plt.show()
 
 Recall how a radial basis function kernel has 2 hyperparameters: `C` and `gamma`. To further investigate tuning, you'll generate 9 subplots with varying parameter values and plot the resulting decision boundaries. Take a look at this [example from sci-kit learn](https://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html) as inspiration. Each of the 9 plots should look like this:
 
-![](SVM_rbf.png)
+![](images/SVM_rbf.png)
 
 Note that the score represents the percentage of correctly classified instances according to the model. 
 
