@@ -482,7 +482,7 @@ Now build a simple linear SVM using this data. Note that using SVC, some slack i
 - Create a train-test-split of 75-25
 - Standardize the data
 - Fit an SVM model, make sure that you set "probability = True"
-- after you ran the model, make probability predictions on the test set, and calculate the classification accuracy score
+- After you run the model, calculate the classification accuracy score
 
 
 ```python
