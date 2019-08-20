@@ -145,7 +145,7 @@ Now build a simple linear SVM using this data. Note that using SVC, some slack i
 - Create a train-test-split of 75-25
 - Standardize the data
 - Fit an SVM model, make sure that you set "probability = True"
-- after you ran the model, make probability predictions on the test set, and calculate the classification accuracy score
+- After you run the model, calculate the classification accuracy score
 
 > Warning: It takes quite a while to compute this! The score is slightly better than the best result obtained using decision trees, but at the cost of computational resources. Changing kernels can make computation times even longer.
 
