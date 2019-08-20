@@ -42,10 +42,6 @@ plt.scatter(X_4[:, 0], X_4[:, 1], c = y_4, s=25)
 plt.show()
 ```
 
-
-![png](index_files/index_7_0.png)
-
-
   
 
 ## Explore the RBF kernel
@@ -64,6 +60,20 @@ Note that the score represents the percentage of correctly classified instances 
 
 
 ```python
+#__SOLUTION__
+C_range =  np.array([0.1, 1, 10])  # [0.01, 10]
+gamma_range =  np.array([0.1, 1, 100]) # [1, 100] 
+param_grid = dict(gamma=gamma_range, C=C_range)
+details = []
+for C in C_range:
+    for gamma in gamma_range:
+        clf = svm.SVC(C=C, gamma=gamma)
+        clf.fit(X_4, y_4)
+        details.append((C, gamma, clf))
+```
+
+
+```python
 # Prepare your data for plotting
 
 ```
@@ -72,6 +82,27 @@ Note that the score represents the percentage of correctly classified instances 
 ```python
 # Plot the prediction results in 9 subplots  
 
+```
+
+
+```python
+#__SOLUTION__
+# Plot the prediction results in 9 subplots  
+plt.figure(figsize=(11, 11))
+
+for (k, (C, gamma, clf)) in enumerate(details):
+    # evaluate the predictions in a grid
+    Z = clf.predict(x1x2)  
+    Z = Z.reshape(X1_C.shape)
+
+    # visualize decision function for these parameters
+    plt.subplot(3, 3, k + 1)
+    plt.title("gam= %r, C= %r, score = %r"  % (gamma, C, round(clf.score(X_4,y_4), 2)))
+
+    # visualize parameter's effect on decision function
+    plt.contourf(X1_C, X2_C, Z, alpha = 1)
+    plt.scatter(X_4[:, 0], X_4[:, 1], c=y_4,  edgecolors='gray')
+    plt.axis('tight')
 ```
 
 Repeat what you did before but now, use `decision_function` instead of `predict`. What do you see?
@@ -104,14 +135,65 @@ Note that `decision_function()` cannot be used on a classifier with more than tw
 
 
 ```python
+#__SOLUTION__
+r_range =  np.array([0.1, 2])  # [0.01, 10]
+gamma_range =  np.array([0.1, 1]) # [1, 100] 
+d_range = np.array([3, 4])
+param_grid = dict(gamma=gamma_range, degree = d_range, coef0 = r_range)
+details = []
+for d in d_range:
+    for gamma in gamma_range:
+         for r in r_range:
+            clf = svm.SVC(kernel = "poly", coef0 = r , gamma=gamma, degree= d)
+            clf.fit(X_3, y_3)
+            details.append((r, d, gamma, clf))
+```
+
+
+```python
 # Prepare your data for plotting
 
 ```
 
 
 ```python
+#__SOLUTION__
+X1= X_3[:,0]
+X2= X_3[:,1]
+X1_min, X1_max = X1.min() - 1, X1.max() + 1
+X2_min, X2_max = X2.min() - 1, X2.max() + 1
+
+x1_coord = np.linspace(X1_min, X1_max, 500)
+x2_coord = np.linspace(X2_min, X2_max, 500)
+
+X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
+x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
+```
+
+
+```python
 # Plot the prediction results in 8 subplots  
 
+```
+
+
+```python
+#__SOLUTION__
+plt.figure(figsize=(12, 14))
+
+for (k, (r, d,gamma, clf)) in enumerate(details):
+    # evaluate the predictions in a grid
+    Z = clf.predict(x1x2)  
+    Z = Z.reshape(X1_C.shape)
+
+    # visualize decision function for these parameters
+    plt.subplot(4, 2, k + 1)
+    plt.title("d= %r, gam= %r, r = %r , score = %r"  % (d, gamma,r, round(clf.score(X_3,y_3), 2)))
+
+    # visualize parameter's effect on decision function
+    plt.contourf(X1_C, X2_C, Z, alpha = 1)
+    plt.scatter(X_3[:, 0], X_3[:, 1], c=y_3,  edgecolors='gray')
+    plt.axis('tight')
 ```
 
 ## The Sigmoid Kernel
@@ -136,14 +218,63 @@ Look at 9 solutions using the following values for $\gamma$ and $r$.
 
 
 ```python
+#__SOLUTION__
+r_range =  np.array([0.01, 1, 10])  
+gamma_range =  np.array([0.001, 0.01, 0.1]) 
+param_grid = dict(gamma=gamma_range,coef0 = r_range)
+details = []
+for gamma in gamma_range:
+     for r in r_range:
+        clf = svm.SVC(kernel = "sigmoid", coef0 = r , gamma=gamma)
+        clf.fit(X_3, y_3) 
+        details.append((r, gamma, clf))
+```
+
+
+```python
 # Prepare your data for plotting
 
 ```
 
 
 ```python
+#__SOLUTION__
+X1= X_3[:,0]
+X2= X_3[:,1]
+X1_min, X1_max = X1.min() - 1, X1.max() + 1
+X2_min, X2_max = X2.min() - 1, X2.max() + 1
+
+x1_coord = np.linspace(X1_min, X1_max, 500)
+x2_coord = np.linspace(X2_min, X2_max, 500)
+
+X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
+x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
+```
+
+
+```python
 # Plot the prediction results in 9 subplots  
 
+```
+
+
+```python
+#__SOLUTION__
+plt.figure(figsize=(12, 14))
+
+for (k, (r, gamma, clf)) in enumerate(details):
+    # evaluate the predictions in a grid
+    Z = clf.predict(x1x2)  
+    Z = Z.reshape(X1_C.shape)
+
+    # visualize decision function for these parameters
+    plt.subplot(3, 3, k + 1)
+    plt.title(" gam= %r, r = %r , score = %r"  % (gamma,r, round(clf.score(X_3,y_3), 2)))
+
+    # visualize parameter's effect on decision function
+    plt.contourf(X1_C, X2_C, Z, alpha = 1)
+    plt.scatter(X_3[:, 0], X_3[:, 1], c=y_3,  edgecolors='gray')
+    plt.axis('tight')
 ```
 
 ## What is your conclusion here?
@@ -167,6 +298,25 @@ Explore the same parameters you did before when exploring polynomial kernels
 
 
 ```python
+#__SOLUTION__
+X_train, X_test, y_train, y_test = train_test_split(X_3, y_3, test_size = 0.33, random_state=123)
+
+# Create a loop that builds a model for each of the 8 combinations
+r_range =  np.array([0.1, 2])  # [0.01, 10]
+gamma_range =  np.array([0.1, 1]) # [1, 100] 
+d_range = np.array([3, 4])
+param_grid = dict(gamma=gamma_range, degree = d_range, coef0 = r_range)
+details = []
+for d in d_range:
+    for gamma in gamma_range:
+         for r in r_range:
+            clf = svm.SVC(kernel = "poly", coef0 = r , gamma=gamma, degree= d)
+            clf.fit(X_train, y_train)
+            details.append((r, d, gamma, clf))
+```
+
+
+```python
 # Prepare your data for plotting
 
 ```
@@ -179,7 +329,61 @@ Explore the same parameters you did before when exploring polynomial kernels
 
 
 ```python
+#__SOLUTION__
+# Plot the prediction results in 8 subplots  
+plt.figure(figsize=(12, 14))
+
+for (k, (r, d,gamma, clf)) in enumerate(details):
+    # evaluate the predictions in a grid
+    Z = clf.predict(x1x2)  
+    Z = Z.reshape(X1_C.shape)
+
+    # visualize decision function for these parameters
+    plt.subplot(4, 2, k + 1)
+    plt.title("d= %r, gam= %r, r = %r , score = %r"  % (d, gamma,r, round(clf.score(X_train,y_train), 2)))
+
+    # visualize parameter's effect on decision function
+    plt.contourf(X1_C, X2_C, Z, alpha = 1)
+    plt.scatter(X1, X2, c=y_train,  edgecolors='gray')
+    plt.axis('tight')
+```
+
+
+```python
 # Now plot the prediction results for the test set
+```
+
+
+```python
+#__SOLUTION__
+# Prepare your data for plotting
+X1= X_test[:,0]
+X2= X_test[:,1]
+X1_min, X1_max = X1.min() - 1, X1.max() + 1
+X2_min, X2_max = X2.min() - 1, X2.max() + 1
+
+x1_coord = np.linspace(X1_min, X1_max, 500)
+x2_coord = np.linspace(X2_min, X2_max, 500)
+
+X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
+x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
+
+# Plot the prediction results in 8 subplots  
+plt.figure(figsize=(12, 14))
+
+for (k, (r, d,gamma, clf)) in enumerate(details):
+    # evaluate the predictions in a grid
+    Z = clf.predict(x1x2)  
+    Z = Z.reshape(X1_C.shape)
+
+    # visualize decision function for these parameters
+    plt.subplot(4, 2, k + 1)
+    plt.title("d= %r, gam= %r, r = %r , score = %r"  % (d, gamma,r, round(clf.score(X_test,y_test), 2)))
+
+    # visualize parameter's effect on decision function
+    plt.contourf(X1_C, X2_C, Z, alpha = 1)
+    plt.scatter(X1, X2, c=y_test,  edgecolors='gray')
+    plt.axis('tight')
 ```
 
 ## A higher-dimensional, real world data set
@@ -207,7 +411,7 @@ Simply run the code below to import and preview the dataset. Be sure to note the
 
 ```python
 import statsmodels as sm
-import sklearn.preprocessing as preprocessing
+from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 import pandas as pd
@@ -225,27 +429,60 @@ data = pd.get_dummies(salaries[xcols], drop_first=True)
 Now build a simple linear SVM using this data. Note that using SVC, some slack is automatically allowed, so the data doesn't have to perfectly linearly separable.
 
 - Create a train-test-split of 75-25
-- Make sure that you set "probability = True"
+- Standardize the data
+- Fit an SVM model, make sure that you set "probability = True"
 - after you ran the model, make probability predictions on the test set, and calculate the classification accuracy score
 
 
 ```python
-# Your code here
+# Split the data into a train and test set
 ```
 
 
 ```python
-# Your code here
+#__SOLUTION__
+X_train, X_test, y_train, y_test = train_test_split(data, target, 
+                                                    test_size = 0.25, random_state=123)
 ```
 
 
 ```python
-# Your code here
+# Standardize the data
+
 ```
 
 
 ```python
-# Your code here
+#__SOLUTION__
+
+# Standardize the data
+std = StandardScaler()
+X_train_transformed = std.fit_transform(X_train)
+X_test_transformed = std.transform(X_test)
+```
+
+
+```python
+# Fit the SVM model. This will take some time!
+```
+
+
+```python
+#__SOLUTION__
+# Fit SVM model. This will take some time!
+clf = svm.SVC(probability=True)
+clf.fit(X_train_transformed, y_train['>50K'])
+```
+
+
+```python
+# Calculate the classification accuracy score
+```
+
+
+```python
+#__SOLUTION__
+clf.score(X_test_transformed,y_test)
 ```
 
 > Warning: It takes quite a while to compute this! The score is slightly better than the best result obtained using decision trees, but at the cost of computational resources. Changing kernels can make computation times even longer.
