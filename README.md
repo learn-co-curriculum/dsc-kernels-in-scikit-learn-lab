@@ -17,35 +17,6 @@ You will be able to:
 
 To start, reexamine the final datasets from the previous lab.
 
-
-```python
-from sklearn.datasets import make_blobs
-from sklearn.datasets import make_moons
-import matplotlib.pyplot as plt
-%matplotlib inline  
-from sklearn import svm
-from sklearn.model_selection import train_test_split
-
-import numpy as np
-
-plt.figure(figsize=(10, 4))
-plt.subplot(121)
-plt.title("Four blobs")
-X_3, y_3 = make_blobs(n_samples=100, n_features=2, centers=4, cluster_std=1.6,  random_state = 123)
-plt.scatter(X_3[:, 0], X_3[:, 1], c = y_3, s=25)
-
-plt.subplot(122)
-plt.title("Two interleaving half circles")
-X_4, y_4 = make_moons(n_samples=100, shuffle = False , noise = 0.3, random_state=123)
-plt.scatter(X_4[:, 0], X_4[:, 1], c = y_4, s=25)
-
-plt.show()
-```
-
-
-![png](index_files/index_7_0.png)
-
-
   
 
 ## Explore the RBF kernel
@@ -58,21 +29,6 @@ Note that the score represents the percentage of correctly classified instances 
 
 
 ```python
-# Create a loop that builds a model for each of the 9 combinations
-C_range =  np.array([0.1, 1, 10])  # [0.01, 10]
-gamma_range =  np.array([0.1, 1, 100]) # [1, 100] 
-param_grid = dict(gamma=gamma_range, C=C_range)
-details = []
-for C in C_range:
-    for gamma in gamma_range:
-        clf = svm.SVC(C=C, gamma=gamma)
-        clf.fit(X_4, y_4)
-        details.append((C, gamma, clf))
-```
-
-
-```python
-# Prepare your data for plotting
 X1= X_4[:,0]
 X2= X_4[:,1]
 X1_min, X1_max = X1.min() - 1, X1.max() + 1
@@ -85,35 +41,10 @@ X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
 x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
 ```
 
-
-```python
-# Plot the prediction results in 9 subplots  
-plt.figure(figsize=(11, 11))
-
-for (k, (C, gamma, clf)) in enumerate(details):
-    # evaluate the predictions in a grid
-    Z = clf.predict(x1x2)  
-    Z = Z.reshape(X1_C.shape)
-
-    # visualize decision function for these parameters
-    plt.subplot(3, 3, k + 1)
-    plt.title("gam= %r, C= %r, score = %r"  % (gamma, C, round(clf.score(X_4,y_4), 2)))
-
-    # visualize parameter's effect on decision function
-    plt.contourf(X1_C, X2_C, Z, alpha = 1)
-    plt.scatter(X_4[:, 0], X_4[:, 1], c=y_4,  edgecolors='gray')
-    plt.axis('tight')
-```
-
-
-![png](index_files/index_15_0.png)
-
-
 Repeat what you did before but now, use `decision_function` instead of `predict`. What do you see?
 
 
 ```python
-# Plot the prediction results in 9 subplots  
 plt.figure(figsize=(12, 12))
 
 for (k, (C, gamma, clf)) in enumerate(details):
@@ -131,10 +62,6 @@ for (k, (C, gamma, clf)) in enumerate(details):
     plt.axis('tight')
 ```
 
-
-![png](index_files/index_17_0.png)
-
-
 ## Explore the Polynomial kernel
 
 Recall that the polynomial kernel has 3 hyperparameters:
@@ -149,61 +76,6 @@ Build 8 different plots using all the possible combinations between there two va
 
 Note that `decision_function()` cannot be used on a classifier with more than two classes, so simply use `predict()` again.
 
-
-```python
-# Create a loop that builds a model for each of the 8 combinations
-r_range =  np.array([0.1, 2])  # [0.01, 10]
-gamma_range =  np.array([0.1, 1]) # [1, 100] 
-d_range = np.array([3, 4])
-param_grid = dict(gamma=gamma_range, degree = d_range, coef0 = r_range)
-details = []
-for d in d_range:
-    for gamma in gamma_range:
-         for r in r_range:
-            clf = svm.SVC(kernel = "poly", coef0 = r , gamma=gamma, degree= d)
-            clf.fit(X_3, y_3)
-            details.append((r, d, gamma, clf))
-```
-
-
-```python
-# Prepare your data for plotting
-X1= X_3[:,0]
-X2= X_3[:,1]
-X1_min, X1_max = X1.min() - 1, X1.max() + 1
-X2_min, X2_max = X2.min() - 1, X2.max() + 1
-
-x1_coord = np.linspace(X1_min, X1_max, 500)
-x2_coord = np.linspace(X2_min, X2_max, 500)
-
-X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
-x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
-```
-
-
-```python
-# Plot the prediction results in 8 subplots  
-plt.figure(figsize=(12, 14))
-
-for (k, (r, d,gamma, clf)) in enumerate(details):
-    # evaluate the predictions in a grid
-    Z = clf.predict(x1x2)  
-    Z = Z.reshape(X1_C.shape)
-
-    # visualize decision function for these parameters
-    plt.subplot(4, 2, k + 1)
-    plt.title("d= %r, gam= %r, r = %r , score = %r"  % (d, gamma,r, round(clf.score(X_3,y_3), 2)))
-
-    # visualize parameter's effect on decision function
-    plt.contourf(X1_C, X2_C, Z, alpha = 1)
-    plt.scatter(X_3[:, 0], X_3[:, 1], c=y_3,  edgecolors='gray')
-    plt.axis('tight')
-```
-
-
-![png](index_files/index_23_0.png)
-
-
 ## The Sigmoid Kernel
 
 Build a support vector machine using the Sigmoid kernel.
@@ -217,59 +89,6 @@ Look at 9 solutions using the following values for $\gamma$ and $r$.
 
 - $\gamma= 0.001, 0.01$ and $0.1$
 - $r = 0.01, 1$ and $10$
-
-
-```python
-# Create a loop that builds a model for each of the 9 combinations
-r_range =  np.array([0.01, 1, 10])  
-gamma_range =  np.array([0.001, 0.01, 0.1]) 
-param_grid = dict(gamma=gamma_range,coef0 = r_range)
-details = []
-for gamma in gamma_range:
-     for r in r_range:
-        clf = svm.SVC(kernel = "sigmoid", coef0 = r , gamma=gamma)
-        clf.fit(X_3, y_3) 
-        details.append((r, gamma, clf))
-```
-
-
-```python
-# Prepare your data for plotting
-X1= X_3[:,0]
-X2= X_3[:,1]
-X1_min, X1_max = X1.min() - 1, X1.max() + 1
-X2_min, X2_max = X2.min() - 1, X2.max() + 1
-
-x1_coord = np.linspace(X1_min, X1_max, 500)
-x2_coord = np.linspace(X2_min, X2_max, 500)
-
-X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
-x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
-```
-
-
-```python
-# Plot the prediction results in 9 subplots  
-plt.figure(figsize=(12, 14))
-
-for (k, (r, gamma, clf)) in enumerate(details):
-    # evaluate the predictions in a grid
-    Z = clf.predict(x1x2)  
-    Z = Z.reshape(X1_C.shape)
-
-    # visualize decision function for these parameters
-    plt.subplot(3, 3, k + 1)
-    plt.title(" gam= %r, r = %r , score = %r"  % (gamma,r, round(clf.score(X_3,y_3), 2)))
-
-    # visualize parameter's effect on decision function
-    plt.contourf(X1_C, X2_C, Z, alpha = 1)
-    plt.scatter(X_3[:, 0], X_3[:, 1], c=y_3,  edgecolors='gray')
-    plt.axis('tight')
-```
-
-
-![png](index_files/index_28_0.png)
-
 
 ## What is your conclusion here?
 
@@ -286,24 +105,6 @@ Explore the same parameters you did before when exploring polynomial kernels
 
 
 ```python
-X_train, X_test, y_train, y_test = train_test_split(X_3, y_3, test_size = 0.33, random_state=123)
-
-# Create a loop that builds a model for each of the 8 combinations
-r_range =  np.array([0.1, 2])  # [0.01, 10]
-gamma_range =  np.array([0.1, 1]) # [1, 100] 
-d_range = np.array([3, 4])
-param_grid = dict(gamma=gamma_range, degree = d_range, coef0 = r_range)
-details = []
-for d in d_range:
-    for gamma in gamma_range:
-         for r in r_range:
-            clf = svm.SVC(kernel = "poly", coef0 = r , gamma=gamma, degree= d)
-            clf.fit(X_train, y_train)
-            details.append((r, d, gamma, clf))
-```
-
-
-```python
 # Prepare your data for plotting
 X1= X_train[:,0]
 X2= X_train[:,1]
@@ -316,66 +117,6 @@ x2_coord = np.linspace(X2_min, X2_max, 500)
 X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
 x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
 ```
-
-
-```python
-# Plot the prediction results in 8 subplots  
-plt.figure(figsize=(12, 14))
-
-for (k, (r, d,gamma, clf)) in enumerate(details):
-    # evaluate the predictions in a grid
-    Z = clf.predict(x1x2)  
-    Z = Z.reshape(X1_C.shape)
-
-    # visualize decision function for these parameters
-    plt.subplot(4, 2, k + 1)
-    plt.title("d= %r, gam= %r, r = %r , score = %r"  % (d, gamma,r, round(clf.score(X_train,y_train), 2)))
-
-    # visualize parameter's effect on decision function
-    plt.contourf(X1_C, X2_C, Z, alpha = 1)
-    plt.scatter(X1, X2, c=y_train,  edgecolors='gray')
-    plt.axis('tight')
-```
-
-
-![png](index_files/index_34_0.png)
-
-
-
-```python
-# Prepare your data for plotting
-X1= X_test[:,0]
-X2= X_test[:,1]
-X1_min, X1_max = X1.min() - 1, X1.max() + 1
-X2_min, X2_max = X2.min() - 1, X2.max() + 1
-
-x1_coord = np.linspace(X1_min, X1_max, 500)
-x2_coord = np.linspace(X2_min, X2_max, 500)
-
-X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
-x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
-
-# Plot the prediction results in 8 subplots  
-plt.figure(figsize=(12, 14))
-
-for (k, (r, d,gamma, clf)) in enumerate(details):
-    # evaluate the predictions in a grid
-    Z = clf.predict(x1x2)  
-    Z = Z.reshape(X1_C.shape)
-
-    # visualize decision function for these parameters
-    plt.subplot(4, 2, k + 1)
-    plt.title("d= %r, gam= %r, r = %r , score = %r"  % (d, gamma,r, round(clf.score(X_test,y_test), 2)))
-
-    # visualize parameter's effect on decision function
-    plt.contourf(X1_C, X2_C, Z, alpha = 1)
-    plt.scatter(X1, X2, c=y_test,  edgecolors='gray')
-    plt.axis('tight')
-```
-
-
-![png](index_files/index_35_0.png)
-
 
 ## A higher-dimensional, real world data set
 
@@ -399,196 +140,12 @@ This dataset has 6 predictors:
 
 Simply run the code below to import and preview the dataset. Be sure to note the data type produced by`dmatrices`. `dmatrices` is often used for preprocessing data with continuous and categorical predictors.
 
-
-```python
-import statsmodels as sm
-import sklearn.preprocessing as preprocessing
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-import pandas as pd
-salaries = pd.read_csv("salaries_final.csv", index_col = 0)
-```
-
-
-```python
-salaries.head()
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Age</th>
-      <th>Education</th>
-      <th>Occupation</th>
-      <th>Relationship</th>
-      <th>Race</th>
-      <th>Sex</th>
-      <th>Target</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>39</td>
-      <td>Bachelors</td>
-      <td>Adm-clerical</td>
-      <td>Not-in-family</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>50</td>
-      <td>Bachelors</td>
-      <td>Exec-managerial</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>38</td>
-      <td>HS-grad</td>
-      <td>Handlers-cleaners</td>
-      <td>Not-in-family</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>53</td>
-      <td>11th</td>
-      <td>Handlers-cleaners</td>
-      <td>Husband</td>
-      <td>Black</td>
-      <td>Male</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>28</td>
-      <td>Bachelors</td>
-      <td>Prof-specialty</td>
-      <td>Wife</td>
-      <td>Black</td>
-      <td>Female</td>
-      <td>&lt;=50K</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-
-```python
-salaries.info()
-```
-
-    <class 'pandas.core.frame.DataFrame'>
-    Int64Index: 32561 entries, 0 to 32560
-    Data columns (total 7 columns):
-    Age             32561 non-null int64
-    Education       32561 non-null object
-    Occupation      32561 non-null object
-    Relationship    32561 non-null object
-    Race            32561 non-null object
-    Sex             32561 non-null object
-    Target          32561 non-null object
-    dtypes: int64(1), object(6)
-    memory usage: 2.0+ MB
-
-
-
-```python
-target = pd.get_dummies(salaries.Target, drop_first=True)
-xcols = salaries.columns[:-1]
-data = pd.get_dummies(salaries[xcols], drop_first=True)
-```
-
 Now build a simple linear SVM using this data. Note that using SVC, some slack is automatically allowed, so the data doesn't have to perfectly linearly separable.
 
 - Create a train-test-split of 75-25
-- Make sure that you set "probability = True"
+- Standardize the data
+- Fit an SVM model, make sure that you set "probability = True"
 - after you ran the model, make probability predictions on the test set, and calculate the classification accuracy score
-
-
-```python
-data_train, data_test, target_train, target_test = train_test_split(data, target, 
-                                                                   test_size = 0.25, random_state=123)
-```
-
-
-```python
-import time
-start_time = time.time()
-clf = svm.SVC(probability=True)
-clf.fit(data_train, target_train['>50K'])
-total =(time.time() - start_time)
-```
-
-
-```python
-total/60
-```
-
-
-
-
-    2.498819931348165
-
-
-
-
-```python
-clf.predict_proba(data_test)
-```
-
-
-
-
-    array([[0.17745777, 0.82254223],
-           [0.70343524, 0.29656476],
-           [0.932043  , 0.067957  ],
-           ...,
-           [0.9186611 , 0.0813389 ],
-           [0.85539234, 0.14460766],
-           [0.76004909, 0.23995091]])
-
-
-
-
-```python
-clf.score(data_test, target_test['>50K'])
-```
-
-
-
-
-    0.8304876550792286
-
-
 
 > Warning: It takes quite a while to compute this! The score is slightly better than the best result obtained using decision trees, but at the cost of computational resources. Changing kernels can make computation times even longer.
 
