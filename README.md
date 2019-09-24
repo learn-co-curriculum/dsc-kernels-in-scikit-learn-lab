@@ -43,6 +43,10 @@ plt.show()
 ```
 
 
+![png](index_files/index_7_0.png)
+
+
+
 ```python
 # __SOLUTION__
 from sklearn.datasets import make_blobs
@@ -68,6 +72,10 @@ plt.scatter(X_4[:, 0], X_4[:, 1], c = y_4, s=25)
 plt.show()
 ```
 
+
+![png](index_files/index_8_0.png)
+
+
   
 
 ## Explore the RBF kernel
@@ -86,7 +94,7 @@ Note that the score represents the percentage of correctly classified instances 
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 C_range =  np.array([0.1, 1, 10])  # [0.01, 10]
 gamma_range =  np.array([0.1, 1, 100]) # [1, 100] 
 param_grid = dict(gamma=gamma_range, C=C_range)
@@ -146,6 +154,10 @@ for (k, (C, gamma, clf)) in enumerate(details):
     plt.axis('tight')
 ```
 
+
+![png](index_files/index_19_0.png)
+
+
 Repeat what you did before but now, use `decision_function` instead of `predict`. What do you see?
 
 
@@ -174,6 +186,10 @@ for (k, (C, gamma, clf)) in enumerate(details):
     plt.axis('tight')
 ```
 
+
+![png](index_files/index_22_0.png)
+
+
 ## Explore the Polynomial kernel
 
 Recall that the polynomial kernel has 3 hyperparameters:
@@ -196,7 +212,7 @@ Note that `decision_function()` cannot be used on a classifier with more than tw
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 r_range =  np.array([0.1, 2])  # [0.01, 10]
 gamma_range =  np.array([0.1, 1]) # [1, 100] 
 d_range = np.array([3, 4])
@@ -218,7 +234,7 @@ for d in d_range:
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 X1= X_3[:,0]
 X2= X_3[:,1]
 X1_min, X1_max = X1.min() - 1, X1.max() + 1
@@ -239,7 +255,7 @@ x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 plt.figure(figsize=(12, 14))
 
 for (k, (r, d,gamma, clf)) in enumerate(details):
@@ -256,6 +272,10 @@ for (k, (r, d,gamma, clf)) in enumerate(details):
     plt.scatter(X_3[:, 0], X_3[:, 1], c=y_3,  edgecolors='gray')
     plt.axis('tight')
 ```
+
+
+![png](index_files/index_31_0.png)
+
 
 ## The Sigmoid Kernel
 
@@ -279,7 +299,7 @@ Look at 9 solutions using the following values for $\gamma$ and $r$.
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 r_range =  np.array([0.01, 1, 10])  
 gamma_range =  np.array([0.001, 0.01, 0.1]) 
 param_grid = dict(gamma=gamma_range,coef0 = r_range)
@@ -299,7 +319,7 @@ for gamma in gamma_range:
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 X1= X_3[:,0]
 X2= X_3[:,1]
 X1_min, X1_max = X1.min() - 1, X1.max() + 1
@@ -320,7 +340,7 @@ x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 plt.figure(figsize=(12, 14))
 
 for (k, (r, gamma, clf)) in enumerate(details):
@@ -337,6 +357,10 @@ for (k, (r, gamma, clf)) in enumerate(details):
     plt.scatter(X_3[:, 0], X_3[:, 1], c=y_3,  edgecolors='gray')
     plt.axis('tight')
 ```
+
+
+![png](index_files/index_39_0.png)
+
 
 ## What is your conclusion here?
 
@@ -359,7 +383,7 @@ Explore the same parameters you did before when exploring polynomial kernels
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 X_train, X_test, y_train, y_test = train_test_split(X_3, y_3, test_size = 0.33, random_state=123)
 
 # Create a loop that builds a model for each of the 8 combinations
@@ -406,7 +430,7 @@ x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 # Plot the prediction results in 8 subplots  
 plt.figure(figsize=(12, 14))
 
@@ -426,13 +450,17 @@ for (k, (r, d,gamma, clf)) in enumerate(details):
 ```
 
 
+![png](index_files/index_48_0.png)
+
+
+
 ```python
 # Now plot the prediction results for the test set
 ```
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 # Prepare your data for plotting
 X1= X_test[:,0]
 X2= X_test[:,1]
@@ -462,6 +490,10 @@ for (k, (r, d,gamma, clf)) in enumerate(details):
     plt.scatter(X1, X2, c=y_test,  edgecolors='gray')
     plt.axis('tight')
 ```
+
+
+![png](index_files/index_50_0.png)
+
 
 ## A higher-dimensional, real world data set
 
@@ -497,7 +529,201 @@ salaries.head()
 ```
 
 
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Education</th>
+      <th>Occupation</th>
+      <th>Relationship</th>
+      <th>Race</th>
+      <th>Sex</th>
+      <th>Target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>39</td>
+      <td>Bachelors</td>
+      <td>Adm-clerical</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>50</td>
+      <td>Bachelors</td>
+      <td>Exec-managerial</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>38</td>
+      <td>HS-grad</td>
+      <td>Handlers-cleaners</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>53</td>
+      <td>11th</td>
+      <td>Handlers-cleaners</td>
+      <td>Husband</td>
+      <td>Black</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>28</td>
+      <td>Bachelors</td>
+      <td>Prof-specialty</td>
+      <td>Wife</td>
+      <td>Black</td>
+      <td>Female</td>
+      <td>&lt;=50K</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
 ```python
+# __SOLUTION__
+import statsmodels as sm
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+import pandas as pd
+salaries = pd.read_csv("salaries_final.csv", index_col = 0)
+salaries.head()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Education</th>
+      <th>Occupation</th>
+      <th>Relationship</th>
+      <th>Race</th>
+      <th>Sex</th>
+      <th>Target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>39</td>
+      <td>Bachelors</td>
+      <td>Adm-clerical</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>50</td>
+      <td>Bachelors</td>
+      <td>Exec-managerial</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>38</td>
+      <td>HS-grad</td>
+      <td>Handlers-cleaners</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>53</td>
+      <td>11th</td>
+      <td>Handlers-cleaners</td>
+      <td>Husband</td>
+      <td>Black</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>28</td>
+      <td>Bachelors</td>
+      <td>Prof-specialty</td>
+      <td>Wife</td>
+      <td>Black</td>
+      <td>Female</td>
+      <td>&lt;=50K</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+target = pd.get_dummies(salaries.Target, drop_first=True)
+xcols = salaries.columns[:-1]
+data = pd.get_dummies(salaries[xcols], drop_first=True)
+```
+
+
+```python
+# __SOLUTION__
 target = pd.get_dummies(salaries.Target, drop_first=True)
 xcols = salaries.columns[:-1]
 data = pd.get_dummies(salaries[xcols], drop_first=True)
@@ -517,7 +743,7 @@ Now build a simple linear SVM using this data. Note that using SVC, some slack i
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 X_train, X_test, y_train, y_test = train_test_split(data, target, 
                                                     test_size = 0.25, random_state=123)
 ```
@@ -530,7 +756,7 @@ X_train, X_test, y_train, y_test = train_test_split(data, target,
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 
 # Standardize the data
 std = StandardScaler()
@@ -545,7 +771,7 @@ X_test_transformed = std.transform(X_test)
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 # Fit SVM model. This will take some time!
 clf = svm.SVC(probability=True)
 clf.fit(X_train_transformed, y_train['>50K'])
@@ -558,7 +784,7 @@ clf.fit(X_train_transformed, y_train['>50K'])
 
 
 ```python
-#__SOLUTION__
+# __SOLUTION__
 clf.score(X_test_transformed,y_test)
 ```
 
