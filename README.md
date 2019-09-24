@@ -42,6 +42,32 @@ plt.scatter(X_4[:, 0], X_4[:, 1], c = y_4, s=25)
 plt.show()
 ```
 
+
+```python
+# __SOLUTION__
+from sklearn.datasets import make_blobs
+from sklearn.datasets import make_moons
+import matplotlib.pyplot as plt
+%matplotlib inline  
+from sklearn import svm
+from sklearn.model_selection import train_test_split
+
+import numpy as np
+
+plt.figure(figsize=(10, 4))
+plt.subplot(121)
+plt.title("Four Blobs")
+X_3, y_3 = make_blobs(n_samples=100, n_features=2, centers=4, cluster_std=1.6, random_state = 123)
+plt.scatter(X_3[:, 0], X_3[:, 1], c = y_3, s=25)
+
+plt.subplot(122)
+plt.title("Two Moons with Substantial Overlap")
+X_4, y_4 = make_moons(n_samples=100, shuffle = False , noise = 0.3, random_state=123)
+plt.scatter(X_4[:, 0], X_4[:, 1], c = y_4, s=25)
+
+plt.show()
+```
+
   
 
 ## Explore the RBF kernel
