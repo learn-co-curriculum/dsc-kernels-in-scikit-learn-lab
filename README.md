@@ -42,6 +42,10 @@ plt.scatter(X_4[:, 0], X_4[:, 1], c = y_4, s=25)
 plt.show()
 ```
 
+
+![png](index_files/index_7_0.png)
+
+
   
 
 ## Explore the RBF kernel
@@ -51,6 +55,19 @@ Recall how a radial basis function kernel has 2 hyperparameters: `C` and `gamma`
 ![](images/SVM_rbf.png)
 
 Note that the score represents the percentage of correctly classified instances according to the model. 
+
+
+```python
+C_range =  np.array([0.1, 1, 10])  # [0.01, 10]
+gamma_range =  np.array([0.1, 1, 100]) # [1, 100] 
+param_grid = dict(gamma=gamma_range, C=C_range)
+details = []
+for C in C_range:
+    for gamma in gamma_range:
+        clf = svm.SVC(C=C, gamma=gamma)
+        clf.fit(X_4, y_4)
+        details.append((C, gamma, clf))
+```
 
 
 ```python
@@ -87,6 +104,10 @@ for (k, (C, gamma, clf)) in enumerate(details):
     plt.axis('tight')
 ```
 
+
+![png](index_files/index_16_0.png)
+
+
 ## Explore the Polynomial kernel
 
 Recall that the polynomial kernel has 3 hyperparameters:
@@ -101,6 +122,58 @@ Build 8 different plots using all the possible combinations between there two va
 
 Note that `decision_function()` cannot be used on a classifier with more than two classes, so simply use `predict()` again.
 
+
+```python
+r_range =  np.array([0.1, 2])  # [0.01, 10]
+gamma_range =  np.array([0.1, 1]) # [1, 100] 
+d_range = np.array([3, 4])
+param_grid = dict(gamma=gamma_range, degree = d_range, coef0 = r_range)
+details = []
+for d in d_range:
+    for gamma in gamma_range:
+         for r in r_range:
+            clf = svm.SVC(kernel = "poly", coef0 = r , gamma=gamma, degree= d)
+            clf.fit(X_3, y_3)
+            details.append((r, d, gamma, clf))
+```
+
+
+```python
+X1= X_3[:,0]
+X2= X_3[:,1]
+X1_min, X1_max = X1.min() - 1, X1.max() + 1
+X2_min, X2_max = X2.min() - 1, X2.max() + 1
+
+x1_coord = np.linspace(X1_min, X1_max, 500)
+x2_coord = np.linspace(X2_min, X2_max, 500)
+
+X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
+x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
+```
+
+
+```python
+plt.figure(figsize=(12, 14))
+
+for (k, (r, d,gamma, clf)) in enumerate(details):
+    # evaluate the predictions in a grid
+    Z = clf.predict(x1x2)  
+    Z = Z.reshape(X1_C.shape)
+
+    # visualize decision function for these parameters
+    plt.subplot(4, 2, k + 1)
+    plt.title("d= %r, gam= %r, r = %r , score = %r"  % (d, gamma,r, round(clf.score(X_3,y_3), 2)))
+
+    # visualize parameter's effect on decision function
+    plt.contourf(X1_C, X2_C, Z, alpha = 1)
+    plt.scatter(X_3[:, 0], X_3[:, 1], c=y_3,  edgecolors='gray')
+    plt.axis('tight')
+```
+
+
+![png](index_files/index_22_0.png)
+
+
 ## The Sigmoid Kernel
 
 Build a support vector machine using the Sigmoid kernel.
@@ -114,6 +187,56 @@ Look at 9 solutions using the following values for $\gamma$ and $r$.
 
 - $\gamma= 0.001, 0.01$ and $0.1$
 - $r = 0.01, 1$ and $10$
+
+
+```python
+r_range =  np.array([0.01, 1, 10])  
+gamma_range =  np.array([0.001, 0.01, 0.1]) 
+param_grid = dict(gamma=gamma_range,coef0 = r_range)
+details = []
+for gamma in gamma_range:
+     for r in r_range:
+        clf = svm.SVC(kernel = "sigmoid", coef0 = r , gamma=gamma)
+        clf.fit(X_3, y_3) 
+        details.append((r, gamma, clf))
+```
+
+
+```python
+X1= X_3[:,0]
+X2= X_3[:,1]
+X1_min, X1_max = X1.min() - 1, X1.max() + 1
+X2_min, X2_max = X2.min() - 1, X2.max() + 1
+
+x1_coord = np.linspace(X1_min, X1_max, 500)
+x2_coord = np.linspace(X2_min, X2_max, 500)
+
+X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
+x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
+```
+
+
+```python
+plt.figure(figsize=(12, 14))
+
+for (k, (r, gamma, clf)) in enumerate(details):
+    # evaluate the predictions in a grid
+    Z = clf.predict(x1x2)  
+    Z = Z.reshape(X1_C.shape)
+
+    # visualize decision function for these parameters
+    plt.subplot(3, 3, k + 1)
+    plt.title(" gam= %r, r = %r , score = %r"  % (gamma,r, round(clf.score(X_3,y_3), 2)))
+
+    # visualize parameter's effect on decision function
+    plt.contourf(X1_C, X2_C, Z, alpha = 1)
+    plt.scatter(X_3[:, 0], X_3[:, 1], c=y_3,  edgecolors='gray')
+    plt.axis('tight')
+```
+
+
+![png](index_files/index_27_0.png)
+
 
 ## What is your conclusion here?
 
@@ -130,6 +253,24 @@ Explore the same parameters you did before when exploring polynomial kernels
 
 
 ```python
+X_train, X_test, y_train, y_test = train_test_split(X_3, y_3, test_size = 0.33, random_state=123)
+
+# Create a loop that builds a model for each of the 8 combinations
+r_range =  np.array([0.1, 2])  # [0.01, 10]
+gamma_range =  np.array([0.1, 1]) # [1, 100] 
+d_range = np.array([3, 4])
+param_grid = dict(gamma=gamma_range, degree = d_range, coef0 = r_range)
+details = []
+for d in d_range:
+    for gamma in gamma_range:
+         for r in r_range:
+            clf = svm.SVC(kernel = "poly", coef0 = r , gamma=gamma, degree= d)
+            clf.fit(X_train, y_train)
+            details.append((r, d, gamma, clf))
+```
+
+
+```python
 # Prepare your data for plotting
 X1= X_train[:,0]
 X2= X_train[:,1]
@@ -142,6 +283,66 @@ x2_coord = np.linspace(X2_min, X2_max, 500)
 X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
 x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
 ```
+
+
+```python
+# Plot the prediction results in 8 subplots  
+plt.figure(figsize=(12, 14))
+
+for (k, (r, d,gamma, clf)) in enumerate(details):
+    # evaluate the predictions in a grid
+    Z = clf.predict(x1x2)  
+    Z = Z.reshape(X1_C.shape)
+
+    # visualize decision function for these parameters
+    plt.subplot(4, 2, k + 1)
+    plt.title("d= %r, gam= %r, r = %r , score = %r"  % (d, gamma,r, round(clf.score(X_train,y_train), 2)))
+
+    # visualize parameter's effect on decision function
+    plt.contourf(X1_C, X2_C, Z, alpha = 1)
+    plt.scatter(X1, X2, c=y_train,  edgecolors='gray')
+    plt.axis('tight')
+```
+
+
+![png](index_files/index_33_0.png)
+
+
+
+```python
+# Prepare your data for plotting
+X1= X_test[:,0]
+X2= X_test[:,1]
+X1_min, X1_max = X1.min() - 1, X1.max() + 1
+X2_min, X2_max = X2.min() - 1, X2.max() + 1
+
+x1_coord = np.linspace(X1_min, X1_max, 500)
+x2_coord = np.linspace(X2_min, X2_max, 500)
+
+X2_C, X1_C = np.meshgrid(x2_coord, x1_coord)
+x1x2 = np.c_[X1_C.ravel(), X2_C.ravel()]
+
+# Plot the prediction results in 8 subplots  
+plt.figure(figsize=(12, 14))
+
+for (k, (r, d,gamma, clf)) in enumerate(details):
+    # evaluate the predictions in a grid
+    Z = clf.predict(x1x2)  
+    Z = Z.reshape(X1_C.shape)
+
+    # visualize decision function for these parameters
+    plt.subplot(4, 2, k + 1)
+    plt.title("d= %r, gam= %r, r = %r , score = %r"  % (d, gamma,r, round(clf.score(X_test,y_test), 2)))
+
+    # visualize parameter's effect on decision function
+    plt.contourf(X1_C, X2_C, Z, alpha = 1)
+    plt.scatter(X1, X2, c=y_test,  edgecolors='gray')
+    plt.axis('tight')
+```
+
+
+![png](index_files/index_34_0.png)
+
 
 ## A higher-dimensional, real world data set
 
@@ -165,12 +366,144 @@ This dataset has 6 predictors:
 
 Simply run the code below to import and preview the dataset. Be sure to note the data type produced by`dmatrices`. `dmatrices` is often used for preprocessing data with continuous and categorical predictors.
 
+
+```python
+import statsmodels as sm
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+import pandas as pd
+salaries = pd.read_csv("salaries_final.csv", index_col = 0)
+salaries.head()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Education</th>
+      <th>Occupation</th>
+      <th>Relationship</th>
+      <th>Race</th>
+      <th>Sex</th>
+      <th>Target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>39</td>
+      <td>Bachelors</td>
+      <td>Adm-clerical</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>50</td>
+      <td>Bachelors</td>
+      <td>Exec-managerial</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>38</td>
+      <td>HS-grad</td>
+      <td>Handlers-cleaners</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>53</td>
+      <td>11th</td>
+      <td>Handlers-cleaners</td>
+      <td>Husband</td>
+      <td>Black</td>
+      <td>Male</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>28</td>
+      <td>Bachelors</td>
+      <td>Prof-specialty</td>
+      <td>Wife</td>
+      <td>Black</td>
+      <td>Female</td>
+      <td>&lt;=50K</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+target = pd.get_dummies(salaries.Target, drop_first=True)
+xcols = salaries.columns[:-1]
+data = pd.get_dummies(salaries[xcols], drop_first=True)
+```
+
 Now build a simple linear SVM using this data. Note that using SVC, some slack is automatically allowed, so the data doesn't have to perfectly linearly separable.
 
 - Create a train-test-split of 75-25
 - Standardize the data
 - Fit an SVM model, make sure that you set "probability = True"
 - After you run the model, calculate the classification accuracy score
+
+
+```python
+X_train, X_test, y_train, y_test = train_test_split(data, target, 
+                                                    test_size = 0.25, random_state=123)
+```
+
+
+```python
+
+# Standardize the data
+std = StandardScaler()
+X_train_transformed = std.fit_transform(X_train)
+X_test_transformed = std.transform(X_test)
+```
+
+
+```python
+# Fit SVM model. This will take some time!
+clf = svm.SVC(probability=True)
+clf.fit(X_train_transformed, y_train['>50K'])
+```
+
+
+```python
+clf.score(X_test_transformed,y_test)
+```
 
 > Warning: It takes quite a while to compute this! The score is slightly better than the best result obtained using decision trees, but at the cost of computational resources. Changing kernels can make computation times even longer.
 
