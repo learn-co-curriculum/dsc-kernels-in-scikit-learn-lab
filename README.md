@@ -354,7 +354,8 @@ Now build a simple linear SVM using this data. Note that using SVC, some slack i
 
 
 ```python
-# Fit the SVM model. This will take some time!
+# Fit SVM model. 
+# ⏰ This cell may take several minutes to run
 ```
 
 
