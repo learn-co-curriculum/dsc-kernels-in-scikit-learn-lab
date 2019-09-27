@@ -495,7 +495,8 @@ X_test_transformed = std.transform(X_test)
 
 
 ```python
-# Fit SVM model. This will take some time!
+# Fit SVM model. 
+# ⏰ This cell may take several minutes to run
 clf = svm.SVC(probability=True)
 clf.fit(X_train_transformed, y_train['>50K'])
 ```
