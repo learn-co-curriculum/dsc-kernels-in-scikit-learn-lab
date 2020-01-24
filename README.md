@@ -3,7 +3,7 @@
 
 ## Introduction
 
-In this lab, you'll explore applying several types of kernels on some more visual data. At the end of the lab, you'll then apply your knowledge of SVMs to a real world dataset!
+In this lab, you'll explore applying several types of kernels on some more visual data. At the end of the lab, you'll then apply your knowledge of SVMs to a real-world dataset!
 
 ## Objectives
 
@@ -40,8 +40,6 @@ plt.scatter(X_4[:, 0], X_4[:, 1], c=y_4, s=25)
 
 plt.show()
 ```
-
-  
 
 ## Explore the RBF kernel
 
@@ -154,7 +152,7 @@ Look at 9 solutions using the following values for $\gamma$ and $r$.
 
 ## What is your conclusion here?
 
-- The polynomial kernel is very sensitive to the hyperparameter settings. Especially setting a "wrong" gamma can have a dramatic effect on the model performance
+- The polynomial kernel is very sensitive to the hyperparameter settings. Especially when setting a "wrong" gamma - this can have a dramatic effect on the model performance
 - Our experiments with the Polynomial kernel were more successful
 
 ## Explore the Polynomial kernel again, with a train-test split
@@ -162,10 +160,9 @@ Look at 9 solutions using the following values for $\gamma$ and $r$.
 Explore the same parameters you did before when exploring polynomial kernel 
 
 - Perform a train-test split. Assign 33% of the data to the test set and set the `random_state` to 123 
-- Train 8 models using the training set, for each combination of different parameters 
+- Train 8 models using the training set for each combination of different parameters 
 - Plot the results as above, both for the training and test sets 
-- Make some notes for yourself on training vs test performance and selecting an appropriate model based on these results 
-
+- Make some notes for yourself on training vs test performance and select an appropriate model based on these results 
 
 
 ```python
@@ -198,7 +195,7 @@ d_range = np.array([3, 4])
 
 ## A higher-dimensional, real-world dataset
 
-Until now, you've only explored datasets with two features to make it easy to visualize the decision boundary. Remember that you can use Support Vector Machines on a wide range of classification datasets, with more than two features. While you will no longer be able to visually represent decision boundaries (at least, if you have more than three feature spaces), you'll still be able to make predictions.
+Until now, you've only explored datasets with two features to make it easy to visualize the decision boundary. Remember that you can use Support Vector Machines on a wide range of classification datasets, with more than two features. While you will no longer be able to visually represent decision boundaries (at least not if you have more than three feature spaces), you'll still be able to make predictions.
 
 To do this, you'll use the salaries dataset again (in `'salaries_final.csv'`). 
 
@@ -243,7 +240,7 @@ Now build a simple linear SVM using this data. Note that using SVC, some slack i
 
 - Create a train-test split of 75-25. Set the `random_state` to 123 
 - Standardize the data
-- Fit an SVM model, make sure that you set "probability = True"
+- Fit an SVM model, making sure that you set "probability = True"
 - After you run the model, calculate the classification accuracy score on both the test set
 
 
@@ -273,4 +270,4 @@ X_train, X_test, y_train, y_test = None
 
 ## Summary
 
-Great, you've got plenty of practice with Support Vector Machines! In this lab you explored kernels and applying SVMs to real-life data!
+Great, you've got plenty of practice with Support Vector Machines! In this lab, you explored kernels and applying SVMs to real-life data!
